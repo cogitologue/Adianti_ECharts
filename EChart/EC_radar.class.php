@@ -40,13 +40,15 @@
  public function show()
  {
    
- TPage::include_js('http://echarts.baidu.com/build/dist/echarts.js');
+//TPage::include_js('http://echarts.baidu.com/build/dist/echarts.js');
+        TPage::include_js('app/lib/echarts-2.2.7/build/dist/echarts.js');
          TScript::create("
          
         // configure for module loader
         require.config({
             paths: {
                 echarts: 'http://echarts.baidu.com/build/dist'
+                
             }
         });
         
@@ -86,14 +88,26 @@
                         }
                     ]
                 };
-        
+                    clearTimeout(loadingTicket);
+                loadingTicket = setTimeout(function (){
+                myChart.hideLoading();
+                myChart.setOption(option);
+            },2200);
+            
                 // Load data into the ECharts instance 
                 myChart.setOption(option); 
+
             }
         );
      
          ");
+        TScript::create("
         
+	 var loadingTicket;
+        var effectIndex = -1;
+        var effect = ['spin' , 'bar' , 'ring' , 'whirling' , 'dynamicLine' , 'bubble'];
+ 
+        ");
    
      parent::show();
  }
